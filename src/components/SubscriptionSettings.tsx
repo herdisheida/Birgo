@@ -1,7 +1,7 @@
 "use client";
 
-import { Calendar, TrendingUp, Edit2, Check } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Calendar, TrendingUp, Check, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 import { SubscriptionSettingsProps } from "@birgo/types";
 
@@ -10,23 +10,11 @@ export function SubscriptionSettings({ onSave }: SubscriptionSettingsProps) {
     selectedProducts,
     subscriptionSettings,
     setSubscriptionSettings,
-    updateProductUsage,
+    updateProductQuantity,
     removeProduct,
   } = useSubscriptionStore();
 
   const [isSaved, setIsSaved] = useState(false);
-
-  // Initialize product usage from selected products if not already set
-  useEffect(() => {
-    const selectedProductIds = Object.keys(selectedProducts);
-    const existingUsageIds = subscriptionSettings.productUsage.map((p) => p.id);
-
-    selectedProductIds.forEach((id) => {
-      if (!existingUsageIds.includes(id)) {
-        updateProductUsage(id, 50); // Default to 50% usage
-      }
-    });
-  }, [selectedProducts, subscriptionSettings.productUsage, updateProductUsage]);
 
   const handleSave = () => {
     setIsSaved(true);
@@ -52,16 +40,10 @@ export function SubscriptionSettings({ onSave }: SubscriptionSettingsProps) {
     });
   };
 
-  const getUsageLabel = (usage: number) => {
-    if (usage < 30) return "Low";
-    if (usage < 70) return "Medium";
-    return "High";
-  };
-
-  const products = subscriptionSettings.productUsage;
-
-  const updateUsage = (productId: string, usage: number) => {
-    updateProductUsage(productId, usage);
+  const getUsageLabel = (quantity: number) => {
+    if (quantity <= 3) return "Low Usage";
+    if (quantity <= 6) return "Medium Usage";
+    return "High Usage";
   };
 
   return (
@@ -74,7 +56,7 @@ export function SubscriptionSettings({ onSave }: SubscriptionSettingsProps) {
           Subscription settings
         </h1>
         <p style={{ color: "#1D3C6E", opacity: "0.7" }}>
-          Manage your delivery preferences and product usage
+          Manage your delivery preferences and product quantities
         </p>
       </div>
 
@@ -180,107 +162,96 @@ export function SubscriptionSettings({ onSave }: SubscriptionSettingsProps) {
           )}
         </div>
 
-        {/* Product Usage */}
+        {/* Product Quantities / Usage */}
         <div className="p-6 rounded-3xl bg-white">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "#90C4F4" }}
-              >
-                <TrendingUp className="w-5 h-5" style={{ color: "#1D3C6E" }} />
-              </div>
-              <h2
-                style={{
-                  fontSize: "1.25rem",
-                  color: "#1D3C6E",
-                  fontWeight: "600",
-                }}
-              >
-                Product usage
-              </h2>
-            </div>
-            <button
-              className="flex items-center gap-2 px-4 py-2 rounded-full hover:scale-105 transition-transform"
-              style={{ backgroundColor: "#E8EBEF", color: "#1D3C6E" }}
+          <div className="flex items-center gap-3 mb-6">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#90C4F4" }}
             >
-              <Edit2 className="w-4 h-4" />
-              <span className="text-sm">Edit products</span>
-            </button>
+              <TrendingUp className="w-5 h-5" style={{ color: "#1D3C6E" }} />
+            </div>
+            <h2
+              style={{
+                fontSize: "1.25rem",
+                color: "#1D3C6E",
+                fontWeight: "600",
+              }}
+            >
+              Set quantities
+            </h2>
           </div>
 
-          <p
-            className="text-sm mb-6"
-            style={{ color: "#1D3C6E", opacity: "0.6" }}
-          >
-            Adjust how quickly you use each product to optimize delivery timing
-          </p>
-
-          <div className="space-y-6">
-            {products.map((product) => (
-              <div key={product.id}>
-                <div className="flex items-center justify-between mb-2">
-                  <span style={{ color: "#1D3C6E", fontWeight: "600" }}>
-                    {product.name}
-                  </span>
+          <div className="space-y-8">
+            {Object.values(selectedProducts).map((product) => (
+              <div
+                key={product.id}
+                className="pb-6 border-b last:border-0"
+                style={{ borderColor: "#E8EBEF" }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <span
+                      style={{
+                        color: "#1D3C6E",
+                        fontWeight: "600",
+                        fontSize: "1.125rem",
+                      }}
+                    >
+                      {product.name}
+                    </span>
+                    <p
+                      className="text-sm mt-1"
+                      style={{ color: "#1D3C6E", opacity: "0.6" }}
+                    >
+                      Quantity per delivery:{" "}
+                      <span style={{ fontWeight: "700", color: "#6FAEF2" }}>
+                        {product.quantity}
+                      </span>
+                    </p>
+                  </div>
                   <div className="flex items-center gap-3">
                     <span
-                      className="text-sm px-3 py-1 rounded-full"
+                      className="text-xs px-3 py-1 rounded-full font-medium"
                       style={{ backgroundColor: "#90C4F4", color: "#1D3C6E" }}
                     >
-                      {getUsageLabel(product.usage)}
+                      {getUsageLabel(product.quantity)}
                     </span>
                     <button
                       onClick={() => removeProduct(product.id)}
-                      className="text-sm hover:underline"
+                      className="text-sm p-2 hover:bg-gray-100 rounded-full transition-colors"
                       style={{ color: "#1D3C6E", opacity: "0.5" }}
+                      title="Remove product"
                     >
-                      Remove
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
 
-                {/* Usage Slider */}
-                <div>
+                {/* Quantity Slider */}
+                <div className="px-1">
                   <input
                     type="range"
-                    min="0"
-                    max="100"
-                    value={product.usage}
+                    min="1"
+                    max="10"
+                    step="1"
+                    value={product.quantity}
                     onChange={(e) =>
-                      updateUsage(product.id, Number(e.target.value))
+                      updateProductQuantity(product.id, Number(e.target.value))
                     }
-                    className="w-full h-2 rounded-full appearance-none cursor-pointer"
+                    className="w-full h-2 rounded-full appearance-none cursor-pointer mb-2"
                     style={{
-                      background: `linear-gradient(to right, #6FAEF2 0%, #6FAEF2 ${product.usage}%, #E8EBEF ${product.usage}%, #E8EBEF 100%)`,
+                      background: `linear-gradient(to right, #6FAEF2 0%, #6FAEF2 ${((product.quantity - 1) / 9) * 100}%, #E8EBEF ${((product.quantity - 1) / 9) * 100}%, #E8EBEF 100%)`,
                     }}
                   />
                   <div
-                    className="flex justify-between text-xs mt-1"
+                    className="flex justify-between text-xs font-medium"
                     style={{ color: "#1D3C6E", opacity: "0.5" }}
                   >
-                    <span>Low usage</span>
-                    <span>High usage</span>
+                    <span>Low (1)</span>
+                    <span>Medium (5)</span>
+                    <span>High (10)</span>
                   </div>
-                </div>
-
-                {/* Visual indicator */}
-                <div
-                  className="mt-3 h-2 rounded-full overflow-hidden"
-                  style={{ backgroundColor: "#E8EBEF" }}
-                >
-                  <div
-                    className="h-full rounded-full transition-all duration-300"
-                    style={{
-                      width: `${product.usage}%`,
-                      backgroundColor:
-                        product.usage < 30
-                          ? "#90C4F4"
-                          : product.usage < 70
-                            ? "#6FAEF2"
-                            : "#1D3C6E",
-                    }}
-                  />
                 </div>
               </div>
             ))}
@@ -296,10 +267,10 @@ export function SubscriptionSettings({ onSave }: SubscriptionSettingsProps) {
           {isSaved ? (
             <>
               <Check className="w-5 h-5" />
-              <span>Changes saved</span>
+              <span>Proceeding to Checkout</span>
             </>
           ) : (
-            <span>Save changes</span>
+            <span>Save and Continue</span>
           )}
         </button>
       </div>

@@ -1,32 +1,21 @@
 "use client";
 
-import { Minus, Plus, X, ShoppingBag } from "lucide-react";
+import { X, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 import { products } from "@birgo/constants";
 import { ProductSelectionProps } from "@birgo/types";
 
 export function ProductSelection({ onContinue }: ProductSelectionProps) {
-  const {
-    customerInput,
-    selectedProducts,
-    addProduct,
-    updateProductQuantity,
-    removeProduct,
-  } = useSubscriptionStore();
+  const { customerInput, selectedProducts, addProduct, removeProduct } =
+    useSubscriptionStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    // Smart auto-population: Only populate if cart is empty and preferences are set
     if (
       Object.keys(selectedProducts).length === 0 &&
       customerInput.productPreferences.length > 0
     ) {
-      let multiplier = 1;
-      if (customerInput.householdSize === "3-4 people") multiplier = 2;
-      if (customerInput.householdSize === "5+ people") multiplier = 3;
-      if (customerInput.householdType === "Family with kids") multiplier += 1;
-
       products.forEach((product) => {
         let match = false;
         if (
@@ -44,8 +33,6 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
           product.category === "Laundry"
         )
           match = true;
-
-        // Map cleaning generally across relevant tools
         if (
           customerInput.productPreferences.includes("Cleaning") &&
           (product.category === "Kitchen" || product.category === "Bathroom")
@@ -56,8 +43,8 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
           addProduct({
             id: product.id,
             name: product.name,
-            quantity: multiplier,
-            price: 5.99, // Mock price for UI
+            quantity: 1, // Default quantity set to 1 here. User modifies later.
+            price: 5.99,
           });
         }
       });
@@ -76,17 +63,7 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
     }
   };
 
-  const updateQuantity = (productId: string, delta: number) => {
-    const current = selectedProducts[productId]?.quantity || 0;
-    const newQuantity = current + delta;
-    updateProductQuantity(productId, newQuantity);
-  };
-
   const selectedCount = Object.keys(selectedProducts).length;
-  const totalItems = Object.values(selectedProducts).reduce(
-    (sum, item) => sum + item.quantity,
-    0,
-  );
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8 flex gap-8">
@@ -101,11 +78,10 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
               Choose your products
             </h1>
             <p style={{ color: "#1D3C6E", opacity: "0.7" }}>
-              We've recommended these based on your household
+              Select all the items you want delivered
             </p>
           </div>
 
-          {/* Mobile cart button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="lg:hidden flex items-center gap-2 px-4 py-2 rounded-full mt-2"
@@ -116,11 +92,9 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
           </button>
         </div>
 
-        {/* Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {products.map((product) => {
-            const quantity = selectedProducts[product.id]?.quantity || 0;
-            const isAdded = quantity > 0;
+            const isAdded = !!selectedProducts[product.id];
 
             return (
               <div
@@ -136,14 +110,12 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                     style={{ color: "#1D3C6E" }}
                   />
                 </div>
-
                 <h3
                   className="text-center mb-4 text-sm"
                   style={{ color: "#1D3C6E", fontWeight: "600" }}
                 >
                   {product.name}
                 </h3>
-
                 {!isAdded ? (
                   <button
                     onClick={() => addItem(product.id)}
@@ -153,32 +125,13 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                     Add
                   </button>
                 ) : (
-                  <div className="flex items-center justify-center gap-3">
-                    <button
-                      onClick={() => updateQuantity(product.id, -1)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                      style={{ backgroundColor: "#90C4F4" }}
-                    >
-                      <Minus className="w-4 h-4" style={{ color: "#1D3C6E" }} />
-                    </button>
-                    <span
-                      style={{
-                        color: "#1D3C6E",
-                        fontWeight: "600",
-                        minWidth: "20px",
-                        textAlign: "center",
-                      }}
-                    >
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(product.id, 1)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
-                      style={{ backgroundColor: "#6FAEF2" }}
-                    >
-                      <Plus className="w-4 h-4 text-white" />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => removeProduct(product.id)}
+                    className="w-full py-2 rounded-full text-sm transition-all hover:scale-105"
+                    style={{ backgroundColor: "#E8EBEF", color: "#1D3C6E" }}
+                  >
+                    Remove
+                  </button>
                 )}
               </div>
             );
@@ -191,15 +144,10 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
         <div className="sticky top-8 p-6 rounded-3xl bg-white">
           <h2
             className="mb-4"
-            style={{
-              fontSize: "1.25rem",
-              color: "#1D3C6E",
-              fontWeight: "600",
-            }}
+            style={{ fontSize: "1.25rem", color: "#1D3C6E", fontWeight: "600" }}
           >
             Your selection
           </h2>
-
           {selectedCount === 0 ? (
             <div
               className="text-center py-8"
@@ -214,7 +162,6 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                 {Object.entries(selectedProducts).map(([productId, item]) => {
                   const product = products.find((p) => p.id === productId);
                   if (!product) return null;
-
                   return (
                     <div
                       key={productId}
@@ -231,20 +178,12 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                             style={{ color: "#1D3C6E" }}
                           />
                         </div>
-                        <div>
-                          <p
-                            className="text-sm"
-                            style={{ color: "#1D3C6E", fontWeight: "600" }}
-                          >
-                            {product.name}
-                          </p>
-                          <p
-                            className="text-xs"
-                            style={{ color: "#1D3C6E", opacity: "0.6" }}
-                          >
-                            Qty: {item.quantity}
-                          </p>
-                        </div>
+                        <p
+                          className="text-sm"
+                          style={{ color: "#1D3C6E", fontWeight: "600" }}
+                        >
+                          {product.name}
+                        </p>
                       </div>
                       <button
                         onClick={() => removeProduct(productId)}
@@ -257,22 +196,13 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                   );
                 })}
               </div>
-
               <div className="pt-4 border-t" style={{ borderColor: "#E8EBEF" }}>
-                <div className="flex justify-between mb-4">
-                  <span style={{ color: "#1D3C6E", opacity: "0.7" }}>
-                    Total items
-                  </span>
-                  <span style={{ color: "#1D3C6E", fontWeight: "600" }}>
-                    {totalItems}
-                  </span>
-                </div>
                 <button
                   onClick={onContinue}
                   className="w-full py-3 rounded-full text-white transition-transform hover:scale-105"
                   style={{ backgroundColor: "#6FAEF2" }}
                 >
-                  Continue
+                  Set Quantities
                 </button>
               </div>
             </>
@@ -280,7 +210,7 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
         </div>
       </div>
 
-      {/* Mobile Sidebar */}
+      {/* Sidebar - Mobile */}
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
           <div
@@ -307,7 +237,6 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                 <X className="w-5 h-5" style={{ color: "#1D3C6E" }} />
               </button>
             </div>
-
             {selectedCount === 0 ? (
               <div
                 className="text-center py-8"
@@ -322,7 +251,6 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                   {Object.entries(selectedProducts).map(([productId, item]) => {
                     const product = products.find((p) => p.id === productId);
                     if (!product) return null;
-
                     return (
                       <div
                         key={productId}
@@ -339,20 +267,12 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                               style={{ color: "#1D3C6E" }}
                             />
                           </div>
-                          <div>
-                            <p
-                              className="text-sm"
-                              style={{ color: "#1D3C6E", fontWeight: "600" }}
-                            >
-                              {product.name}
-                            </p>
-                            <p
-                              className="text-xs"
-                              style={{ color: "#1D3C6E", opacity: "0.6" }}
-                            >
-                              Qty: {item.quantity}
-                            </p>
-                          </div>
+                          <p
+                            className="text-sm"
+                            style={{ color: "#1D3C6E", fontWeight: "600" }}
+                          >
+                            {product.name}
+                          </p>
                         </div>
                         <button
                           onClick={() => removeProduct(productId)}
@@ -365,19 +285,10 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                     );
                   })}
                 </div>
-
                 <div
                   className="pt-4 border-t"
                   style={{ borderColor: "#E8EBEF" }}
                 >
-                  <div className="flex justify-between mb-4">
-                    <span style={{ color: "#1D3C6E", opacity: "0.7" }}>
-                      Total items
-                    </span>
-                    <span style={{ color: "#1D3C6E", fontWeight: "600" }}>
-                      {totalItems}
-                    </span>
-                  </div>
                   <button
                     className="w-full py-3 rounded-full text-white"
                     style={{ backgroundColor: "#6FAEF2" }}
@@ -386,7 +297,7 @@ export function ProductSelection({ onContinue }: ProductSelectionProps) {
                       onContinue?.();
                     }}
                   >
-                    Continue
+                    Set Quantities
                   </button>
                 </div>
               </>

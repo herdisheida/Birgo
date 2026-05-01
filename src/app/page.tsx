@@ -11,14 +11,39 @@ import {
   Package,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
+import { products } from "@birgo/constants";
 
 export default function Home() {
-  const { reset } = useSubscriptionStore();
+  const { reset, addProduct } = useSubscriptionStore();
+  const router = useRouter();
+
+  const handleBundleClick = (e: React.MouseEvent, idx: number) => {
+    e.preventDefault();
+    reset(); // Clear previous selections
+
+    if (idx !== 3) {
+      // Not custom pack, let's pre-fill items based on pack chosen
+      let itemsToAdd: string[] = [];
+      if (idx === 0) itemsToAdd = ["1", "6", "4"]; // Bathroom: Klósettpappír, Handsápa, Tannkrem
+      if (idx === 1) itemsToAdd = ["2", "10", "12"]; // Kitchen: Eldhúsrúllur, Uppþvottalögur, Svampar
+      if (idx === 2) itemsToAdd = ["9", "11", "13"]; // Cleaning: Uppþvottatöflur, Þvottabursti, Klósettbursti
+
+      itemsToAdd.forEach((id) => {
+        const p = products.find((prod) => prod.id === id);
+        if (p) {
+          addProduct({ id: p.id, name: p.name, quantity: 1, price: 5.99 });
+        }
+      });
+      router.push("/selection"); // Go straight to selection with items added
+    } else {
+      router.push("/selection"); // Custom goes to empty selection
+    }
+  };
 
   return (
     <>
-      {/* Hero Section */}
       <section className="py-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1
@@ -57,7 +82,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How it Works */}
       <section id="how" className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <h2
@@ -143,7 +167,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Product Categories */}
       <section id="products" className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <h2
@@ -179,7 +202,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Subscription Packs */}
       <section id="pricing" className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <h2
@@ -233,13 +255,8 @@ export default function Home() {
                       ),
                   )}
                 </ul>
-                <Link
-                  href={idx === 3 ? "/selection" : "/get-started"}
-                  onClick={() => {
-                    if (idx === 3) {
-                      reset();
-                    }
-                  }}
+                <button
+                  onClick={(e) => handleBundleClick(e, idx)}
                   className="block w-full py-2 rounded-full transition-all text-sm text-center"
                   style={{
                     backgroundColor: idx === 3 ? "#6FAEF2" : "white",
@@ -248,14 +265,13 @@ export default function Home() {
                   }}
                 >
                   {idx === 3 ? "Build custom" : "Select"}
-                </Link>
+                </button>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* AI Section */}
       <section className="py-12 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="p-10 rounded-3xl bg-white text-center">
