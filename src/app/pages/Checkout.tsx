@@ -7,7 +7,7 @@ import {
   Check,
 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useSubscriptionStore } from "../store/subscriptionStore";
 
 export function Checkout() {
@@ -32,23 +32,23 @@ export function Checkout() {
   const delivery = 4.99;
   const total = subtotal + delivery;
 
-  const deliveryFrequency = subscriptionSettings.frequency === 'weekly' ? 'Weekly' :
-                            subscriptionSettings.frequency === 'monthly' ? 'Monthly' :
-                            `Every ${subscriptionSettings.customDays || 30} days`;
+  const deliveryFrequency =
+    subscriptionSettings.frequency === "weekly"
+      ? "Weekly"
+      : subscriptionSettings.frequency === "monthly"
+        ? "Monthly"
+        : `Every ${subscriptionSettings.customDays || 30} days`;
 
   const handleStartSubscription = () => {
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
-      navigate('/subscriptions');
+      navigate("/subscriptions");
     }, 2000);
   };
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: "#E8EBEF" }}
-    >
+    <div className="min-h-screen" style={{ backgroundColor: "#E8EBEF" }}>
       {/* Header */}
       <header className="py-4 px-6 bg-white shadow-sm">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
@@ -58,12 +58,9 @@ export function Checkout() {
               className="w-8 h-8 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
               style={{ backgroundColor: "#E8EBEF" }}
             >
-              <ArrowLeft
-                className="w-5 h-5"
-                style={{ color: "#1D3C6E" }}
-              />
+              <ArrowLeft className="w-5 h-5" style={{ color: "#1D3C6E" }} />
             </button>
-            <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center"
                 style={{ backgroundColor: "#6FAEF2" }}
@@ -76,7 +73,7 @@ export function Checkout() {
               >
                 Birgó
               </span>
-            </div>
+            </Link>
           </div>
           <div
             className="flex items-center gap-2 text-sm"
@@ -104,8 +101,7 @@ export function Checkout() {
             Complete your subscription
           </h1>
           <p style={{ color: "#1D3C6E", opacity: "0.7" }}>
-            Review your order and start your automatic
-            deliveries
+            Review your order and start your automatic deliveries
           </p>
         </div>
 
@@ -119,10 +115,7 @@ export function Checkout() {
                   className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: "#90C4F4" }}
                 >
-                  <MapPin
-                    className="w-5 h-5"
-                    style={{ color: "#1D3C6E" }}
-                  />
+                  <MapPin className="w-5 h-5" style={{ color: "#1D3C6E" }} />
                 </div>
                 <h2
                   style={{
@@ -146,8 +139,10 @@ export function Checkout() {
                   <input
                     type="text"
                     placeholder="Jón Jónsson"
-                    value={deliveryAddress.fullName || ''}
-                    onChange={(e) => setDeliveryAddress({ fullName: e.target.value })}
+                    value={deliveryAddress.fullName || ""}
+                    onChange={(e) =>
+                      setDeliveryAddress({ fullName: e.target.value })
+                    }
                     className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                     style={{
                       backgroundColor: "#E8EBEF",
@@ -167,8 +162,10 @@ export function Checkout() {
                   <input
                     type="text"
                     placeholder="Laugavegur 123"
-                    value={deliveryAddress.street || ''}
-                    onChange={(e) => setDeliveryAddress({ street: e.target.value })}
+                    value={deliveryAddress.street || ""}
+                    onChange={(e) =>
+                      setDeliveryAddress({ street: e.target.value })
+                    }
                     className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                     style={{
                       backgroundColor: "#E8EBEF",
@@ -192,8 +189,10 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="101"
-                      value={deliveryAddress.postalCode || ''}
-                      onChange={(e) => setDeliveryAddress({ postalCode: e.target.value })}
+                      value={deliveryAddress.postalCode || ""}
+                      onChange={(e) =>
+                        setDeliveryAddress({ postalCode: e.target.value })
+                      }
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
@@ -215,8 +214,10 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="Reykjavík"
-                      value={deliveryAddress.city || ''}
-                      onChange={(e) => setDeliveryAddress({ city: e.target.value })}
+                      value={deliveryAddress.city || ""}
+                      onChange={(e) =>
+                        setDeliveryAddress({ city: e.target.value })
+                      }
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
@@ -263,8 +264,10 @@ export function Checkout() {
                   <input
                     type="text"
                     placeholder="1234 5678 9012 3456"
-                    value={paymentMethod.cardNumber || ''}
-                    onChange={(e) => setPaymentMethod({ cardNumber: e.target.value })}
+                    value={paymentMethod.cardNumber || ""}
+                    onChange={(e) =>
+                      setPaymentMethod({ cardNumber: e.target.value })
+                    }
                     className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                     style={{
                       backgroundColor: "#E8EBEF",
@@ -288,8 +291,10 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="MM/YY"
-                      value={paymentMethod.expiryDate || ''}
-                      onChange={(e) => setPaymentMethod({ expiryDate: e.target.value })}
+                      value={paymentMethod.expiryDate || ""}
+                      onChange={(e) =>
+                        setPaymentMethod({ expiryDate: e.target.value })
+                      }
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
@@ -311,8 +316,10 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="123"
-                      value={paymentMethod.cvc || ''}
-                      onChange={(e) => setPaymentMethod({ cvc: e.target.value })}
+                      value={paymentMethod.cvc || ""}
+                      onChange={(e) =>
+                        setPaymentMethod({ cvc: e.target.value })
+                      }
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
@@ -331,8 +338,7 @@ export function Checkout() {
                     className="text-sm"
                     style={{ color: "#1D3C6E", opacity: "0.7" }}
                   >
-                    🔒 Your payment information is encrypted and
-                    secure
+                    🔒 Your payment information is encrypted and secure
                   </p>
                 </div>
               </div>
@@ -359,10 +365,7 @@ export function Checkout() {
                   className="flex items-center gap-3 mb-4 p-4 rounded-2xl"
                   style={{ backgroundColor: "#90C4F4" }}
                 >
-                  <Calendar
-                    className="w-5 h-5"
-                    style={{ color: "#1D3C6E" }}
-                  />
+                  <Calendar className="w-5 h-5" style={{ color: "#1D3C6E" }} />
                   <div>
                     <p
                       className="text-sm"
@@ -386,10 +389,7 @@ export function Checkout() {
 
                 <div className="space-y-3">
                   {orderItems.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex justify-between text-sm"
-                    >
+                    <div key={idx} className="flex justify-between text-sm">
                       <span style={{ color: "#1D3C6E" }}>
                         {item.name} × {item.quantity}
                       </span>
@@ -399,10 +399,7 @@ export function Checkout() {
                           fontWeight: "600",
                         }}
                       >
-                        $
-                        {(item.price * item.quantity).toFixed(
-                          2,
-                        )}
+                        ${(item.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}

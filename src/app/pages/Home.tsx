@@ -187,7 +187,7 @@ export function Home() {
             {[
               {
                 name: "Bathroom pack",
-                items: ["Toilet paper", "Soap", "Shampoo"],
+                items: ["Toilet paper", "Soap", "Toothpaste"],
               },
               {
                 name: "Kitchen pack",
