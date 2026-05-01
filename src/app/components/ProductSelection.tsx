@@ -41,12 +41,8 @@ const products: Product[] = [
   { id: "10", name: "Uppþvottalögur", icon: Droplets, category: "Kitchen" },
   { id: "11", name: "Þvottabursti", icon: Trash2, category: "Kitchen" },
   { id: "12", name: "Svampar", icon: Zap, category: "Kitchen" },
-  {
-    id: "13",
-    name: "Klósettbursti og salernishreinsir",
-    icon: Trash2,
-    category: "Bathroom",
-  },
+  { id: "13", name: "Klósettbursti", icon: Trash2, category: "Bathroom" },
+  { id: "14", name: "Salernishreinsir", icon: Zap, category: "Bathroom" },
 ];
 
 interface ProductSelectionProps {
