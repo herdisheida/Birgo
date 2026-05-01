@@ -10,8 +10,11 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 import { Layout } from "../components/Layout";
+import { useSubscriptionStore } from "../store/subscriptionStore";
 
 export function Home() {
+  const { reset } = useSubscriptionStore();
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -38,6 +41,7 @@ export function Home() {
           </p>
           <Link
             to="/get-started"
+            onClick={() => reset()}
             className="inline-block px-8 py-3 rounded-full text-white transition-transform hover:scale-105"
             style={{ backgroundColor: "#6FAEF2" }}
           >
@@ -229,7 +233,12 @@ export function Home() {
                   )}
                 </ul>
                 <Link
-                  to="/get-started"
+                  to={idx === 3 ? "/selection" : "/get-started"}
+                  onClick={() => {
+                    if (idx === 3) {
+                      reset(); // Empties the store to guarantee a fresh selection page
+                    }
+                  }}
                   className="block w-full py-2 rounded-full transition-all text-sm text-center"
                   style={{
                     backgroundColor: idx === 3 ? "#6FAEF2" : "white",
