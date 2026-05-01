@@ -5,6 +5,7 @@ import { Subscription } from './pages/Subscription';
 import { Checkout } from './pages/Checkout';
 import { About } from './pages/About';
 import { CustomerInput } from './pages/CustomerInput';
+import { Subscriptions } from './pages/Subscriptions';
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
   {
     path: '/subscription',
     Component: Subscription,
+  },
+  {
+    path: '/subscriptions',
+    Component: Subscriptions,
   },
   {
     path: '/checkout',

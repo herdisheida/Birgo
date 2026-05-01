@@ -1,34 +1,10 @@
-import { Package, Sparkles, RotateCw, Droplets, Zap, Wind, Trash2, Bot } from 'lucide-react';
+import { Sparkles, RotateCw, Droplets, Zap, Wind, Trash2, Bot, Package } from 'lucide-react';
 import { Link } from 'react-router';
+import { Layout } from '../components/Layout';
 
 export function Home() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#E8EBEF' }}>
-      {/* Header */}
-      <header className="py-4 px-6">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6FAEF2' }}>
-              <Package className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl" style={{ color: '#1D3C6E', fontWeight: '600' }}>
-              Birgó
-            </span>
-          </Link>
-          <nav className="flex gap-6 text-sm" style={{ color: '#1D3C6E' }}>
-            <a href="#how" className="hover:opacity-70 transition-opacity">
-              How it works
-            </a>
-            <a href="#products" className="hover:opacity-70 transition-opacity">
-              Products
-            </a>
-            <a href="#pricing" className="hover:opacity-70 transition-opacity">
-              Pricing
-            </a>
-          </nav>
-        </div>
-      </header>
-
+    <Layout>
       {/* Hero Section */}
       <section className="py-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
@@ -182,31 +158,6 @@ export function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="py-8 px-6" style={{ backgroundColor: '#1D3C6E' }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="flex justify-between items-center gap-8">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6FAEF2' }}>
-                <Package className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl text-white" style={{ fontWeight: '600' }}>
-                Birgó
-              </span>
-            </div>
-            <nav className="flex gap-6 text-white text-sm">
-              <Link to="/about" className="hover:opacity-70 transition-opacity">About</Link>
-              <a href="#" className="hover:opacity-70 transition-opacity">Contact</a>
-              <a href="#" className="hover:opacity-70 transition-opacity">Privacy</a>
-              <a href="#" className="hover:opacity-70 transition-opacity">Terms</a>
-            </nav>
-          </div>
-          <div className="text-center mt-6 text-white opacity-60 text-sm">
-            © 2026 Birgó. Þú gleymir, við reddum!
-          </div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 }

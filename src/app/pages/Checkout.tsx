@@ -40,7 +40,7 @@ export function Checkout() {
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
-      alert("Subscription started successfully!");
+      navigate('/subscriptions');
     }, 2000);
   };
 
