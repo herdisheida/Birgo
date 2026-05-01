@@ -13,24 +13,23 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
-import { products } from "@birgo/constants";
+import { products, subscriptionPacks } from "@birgo/constants"; // <-- Imported packs here
 
 export default function Home() {
   const { reset, addProduct } = useSubscriptionStore();
   const router = useRouter();
 
-  const handleBundleClick = (e: React.MouseEvent, idx: number) => {
+  // Updated to receive the entire pack object
+  const handleBundleClick = (
+    e: React.MouseEvent,
+    pack: (typeof subscriptionPacks)[0],
+  ) => {
     e.preventDefault();
     reset(); // Clear previous selections
 
-    if (idx !== 3) {
-      // Not custom pack, pre-fill items based on pack chosen
-      let itemsToAdd: string[] = [];
-      if (idx === 0) itemsToAdd = ["1", "6", "4"]; // Bathroom pack
-      if (idx === 1) itemsToAdd = ["2", "10", "12"]; // Kitchen pack
-      if (idx === 2) itemsToAdd = ["9", "11", "13"]; // Cleaning pack
-
-      itemsToAdd.forEach((id) => {
+    if (pack.id !== "custom") {
+      // Loop over the dynamic product IDs from our constants
+      pack.products.forEach((id) => {
         const p = products.find((prod) => prod.id === id);
         if (p) {
           // Set default bundle quantity to medium (5)
@@ -212,25 +211,14 @@ export default function Home() {
             Subscription packs
           </h2>
           <div className="grid grid-cols-4 gap-4">
-            {[
-              {
-                name: "Bathroom pack",
-                items: ["Toilet paper", "Soap", "Toothpaste"],
-              },
-              {
-                name: "Kitchen pack",
-                items: ["Paper towels", "Dish soap", "Sponges"],
-              },
-              {
-                name: "Cleaning pack",
-                items: ["All-purpose", "Glass cleaner", "Wipes"],
-              },
-              { name: "Custom pack", items: ["Choose your own products"] },
-            ].map((pack, idx) => (
+            {/* We map directly over the imported subscriptionPacks */}
+            {subscriptionPacks.map((pack) => (
               <div
-                key={idx}
+                key={pack.id}
                 className="p-5 rounded-3xl bg-white hover:shadow-xl transition-shadow flex flex-col"
-                style={{ border: idx === 3 ? "2px solid #6FAEF2" : "none" }}
+                style={{
+                  border: pack.id === "custom" ? "2px solid #6FAEF2" : "none",
+                }}
               >
                 <h3
                   className="mb-4"
@@ -243,7 +231,7 @@ export default function Home() {
                   {pack.name}
                 </h3>
                 <ul className="space-y-2 mb-6 flex-1">
-                  {pack.items.map(
+                  {pack.displayItems.map(
                     (item, i) =>
                       item && (
                         <li
@@ -257,15 +245,15 @@ export default function Home() {
                   )}
                 </ul>
                 <button
-                  onClick={(e) => handleBundleClick(e, idx)}
+                  onClick={(e) => handleBundleClick(e, pack)}
                   className="block w-full py-2 rounded-full transition-all text-sm text-center"
                   style={{
-                    backgroundColor: idx === 3 ? "#6FAEF2" : "white",
-                    color: idx === 3 ? "white" : "#1D3C6E",
-                    border: idx === 3 ? "none" : "2px solid #E8EBEF",
+                    backgroundColor: pack.id === "custom" ? "#6FAEF2" : "white",
+                    color: pack.id === "custom" ? "white" : "#1D3C6E",
+                    border: pack.id === "custom" ? "none" : "2px solid #E8EBEF",
                   }}
                 >
-                  {idx === 3 ? "Build custom" : "Select"}
+                  {pack.id === "custom" ? "Build custom" : "Select"}
                 </button>
               </div>
             ))}
