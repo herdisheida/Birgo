@@ -4,11 +4,16 @@ import { Selection } from './pages/Selection';
 import { Subscription } from './pages/Subscription';
 import { Checkout } from './pages/Checkout';
 import { About } from './pages/About';
+import { CustomerInput } from './pages/CustomerInput';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     Component: Home,
+  },
+  {
+    path: '/get-started',
+    Component: CustomerInput,
   },
   {
     path: '/selection',

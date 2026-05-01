@@ -137,7 +137,7 @@ export function About() {
             Join thousands who never worry about running out of essentials
           </p>
           <Link
-            to="/selection"
+            to="/get-started"
             className="inline-block px-8 py-3 rounded-full transition-transform hover:scale-105"
             style={{ backgroundColor: 'white', color: '#1D3C6E', fontWeight: '600' }}
           >

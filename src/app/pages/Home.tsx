@@ -39,7 +39,7 @@ export function Home() {
             We deliver household products automatically
           </p>
           <Link
-            to="/selection"
+            to="/get-started"
             className="inline-block px-8 py-3 rounded-full text-white transition-transform hover:scale-105"
             style={{ backgroundColor: '#6FAEF2' }}
           >
@@ -150,7 +150,7 @@ export function Home() {
                   ))}
                 </ul>
                 <Link
-                  to="/selection"
+                  to="/get-started"
                   className="block w-full py-2 rounded-full transition-all text-sm text-center"
                   style={{
                     backgroundColor: idx === 3 ? '#6FAEF2' : 'white',
