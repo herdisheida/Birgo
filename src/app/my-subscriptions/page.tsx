@@ -2,11 +2,14 @@
 
 import { Calendar, Package, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 
 export default function Subscriptions() {
   const router = useRouter();
-  const { selectedProducts, subscriptionSettings } = useSubscriptionStore();
+  const { selectedProducts, subscriptionSettings, reset } =
+    useSubscriptionStore();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const orderItems = Object.values(selectedProducts);
   const hasActiveSubscription = orderItems.length > 0;
@@ -38,6 +41,11 @@ export default function Subscriptions() {
       (sum, item) => sum + (item.price || 0) * item.quantity,
       0,
     );
+  };
+
+  const handleDeleteConfirm = () => {
+    reset(); // Clears everything in the store
+    setShowDeleteConfirm(false);
   };
 
   return (
@@ -218,16 +226,42 @@ export default function Subscriptions() {
 
             {/* Actions */}
             <div
-              className="mt-6 pt-6 border-t flex gap-3"
+              className="mt-6 pt-6 border-t flex flex-col gap-3"
               style={{ borderColor: "#E8EBEF" }}
             >
               <button
                 onClick={() => router.push("/subscription")}
-                className="flex-1 py-3 rounded-full transition-all hover:scale-105"
+                className="w-full py-3 rounded-full transition-all hover:scale-105"
                 style={{ backgroundColor: "#6FAEF2", color: "white" }}
               >
                 Manage Subscription
               </button>
+
+              {!showDeleteConfirm ? (
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="w-full py-3 rounded-full transition-all hover:bg-red-50 text-red-500 font-medium"
+                >
+                  Delete my subscription
+                </button>
+              ) : (
+                <div className="flex gap-3 animate-in fade-in zoom-in duration-200">
+                  <button
+                    onClick={() => setShowDeleteConfirm(false)}
+                    className="flex-1 py-3 rounded-full transition-all hover:bg-gray-100"
+                    style={{ color: "#1D3C6E" }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDeleteConfirm}
+                    className="flex-1 py-3 rounded-full transition-all bg-red-500 text-white hover:bg-red-600 font-medium flex items-center justify-center gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Are you sure? Confirm
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
