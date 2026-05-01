@@ -9998,3 +9998,5 @@ node_modules/@mui/icons-material/SubscriptOutlined.d.ts
 node_modules/@mui/icons-material/SubscriptOutlined.js
 node_modules
 package-lock.json
+.DS_Store
+src/.DS_Store
