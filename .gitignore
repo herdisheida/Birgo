@@ -9996,3 +9996,5 @@ node_modules/@mui/icons-material/Subscript.d.ts
 node_modules/@mui/icons-material/Subscript.js
 node_modules/@mui/icons-material/SubscriptOutlined.d.ts
 node_modules/@mui/icons-material/SubscriptOutlined.js
+node_modules
+package-lock.json
