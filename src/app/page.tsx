@@ -24,19 +24,20 @@ export default function Home() {
     reset(); // Clear previous selections
 
     if (idx !== 3) {
-      // Not custom pack, let's pre-fill items based on pack chosen
+      // Not custom pack, pre-fill items based on pack chosen
       let itemsToAdd: string[] = [];
-      if (idx === 0) itemsToAdd = ["1", "6", "4"]; // Bathroom: Klósettpappír, Handsápa, Tannkrem
-      if (idx === 1) itemsToAdd = ["2", "10", "12"]; // Kitchen: Eldhúsrúllur, Uppþvottalögur, Svampar
-      if (idx === 2) itemsToAdd = ["9", "11", "13"]; // Cleaning: Uppþvottatöflur, Þvottabursti, Klósettbursti
+      if (idx === 0) itemsToAdd = ["1", "6", "4"]; // Bathroom pack
+      if (idx === 1) itemsToAdd = ["2", "10", "12"]; // Kitchen pack
+      if (idx === 2) itemsToAdd = ["9", "11", "13"]; // Cleaning pack
 
       itemsToAdd.forEach((id) => {
         const p = products.find((prod) => prod.id === id);
         if (p) {
-          addProduct({ id: p.id, name: p.name, quantity: 1, price: 5.99 });
+          // Set default bundle quantity to medium (5)
+          addProduct({ id: p.id, name: p.name, quantity: 5, price: 5.99 });
         }
       });
-      router.push("/selection"); // Go straight to selection with items added
+      router.push("/subscription"); // Go straight to subscription quantities
     } else {
       router.push("/selection"); // Custom goes to empty selection
     }

@@ -1,55 +1,15 @@
 "use client";
 
 import { X, ShoppingBag } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 import { products } from "@birgo/constants";
 import { ProductSelectionProps } from "@birgo/types";
 
 export function ProductSelection({ onContinue }: ProductSelectionProps) {
-  const { customerInput, selectedProducts, addProduct, removeProduct } =
+  const { selectedProducts, addProduct, removeProduct } =
     useSubscriptionStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  useEffect(() => {
-    if (
-      Object.keys(selectedProducts).length === 0 &&
-      customerInput.productPreferences.length > 0
-    ) {
-      products.forEach((product) => {
-        let match = false;
-        if (
-          customerInput.productPreferences.includes("Bathroom") &&
-          product.category === "Bathroom"
-        )
-          match = true;
-        if (
-          customerInput.productPreferences.includes("Kitchen") &&
-          product.category === "Kitchen"
-        )
-          match = true;
-        if (
-          customerInput.productPreferences.includes("Laundry") &&
-          product.category === "Laundry"
-        )
-          match = true;
-        if (
-          customerInput.productPreferences.includes("Cleaning") &&
-          (product.category === "Kitchen" || product.category === "Bathroom")
-        )
-          match = true;
-
-        if (match) {
-          addProduct({
-            id: product.id,
-            name: product.name,
-            quantity: 1, // Default quantity set to 1 here. User modifies later.
-            price: 5.99,
-          });
-        }
-      });
-    }
-  }, [addProduct, customerInput, selectedProducts]);
 
   const addItem = (productId: string) => {
     const product = products.find((p) => p.id === productId);

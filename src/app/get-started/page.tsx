@@ -15,11 +15,13 @@ import {
   householdTypes,
   productCategories,
   usageFrequencies,
+  products,
 } from "@birgo/constants";
 
 export default function CustomerInput() {
   const router = useRouter();
-  const { customerInput, setCustomerInput } = useSubscriptionStore();
+  const { customerInput, setCustomerInput, addProduct } =
+    useSubscriptionStore();
 
   const toggleProductPreference = (category: string) => {
     const newPreferences = customerInput.productPreferences.includes(category)
@@ -30,7 +32,61 @@ export default function CustomerInput() {
   };
 
   const handleCreatePlan = () => {
-    router.push("/selection");
+    // 1. Smart Calculator for Quantity (Scale 1 to 10)
+    let qty = 1;
+
+    // Household Size impact
+    if (customerInput.householdSize === "2 people") qty += 1;
+    else if (customerInput.householdSize === "3-4 people") qty += 3;
+    else if (customerInput.householdSize === "5+ people") qty += 5;
+
+    // Household Type impact
+    if (customerInput.householdType === "Shared apartment") qty += 1;
+    else if (customerInput.householdType === "Family with kids") qty += 2;
+
+    // Usage Frequency impact
+    if (customerInput.usageFrequency === "Moderate use") qty += 2;
+    else if (customerInput.usageFrequency === "Heavy use") qty += 4;
+
+    // Cap the quantity between 1 and 10 to match the slider
+    qty = Math.min(Math.max(qty, 1), 10);
+
+    // 2. Add matched products to the store
+    products.forEach((product) => {
+      let match = false;
+      if (
+        customerInput.productPreferences.includes("Bathroom") &&
+        product.category === "Bathroom"
+      )
+        match = true;
+      if (
+        customerInput.productPreferences.includes("Kitchen") &&
+        product.category === "Kitchen"
+      )
+        match = true;
+      if (
+        customerInput.productPreferences.includes("Laundry") &&
+        product.category === "Laundry"
+      )
+        match = true;
+      if (
+        customerInput.productPreferences.includes("Cleaning") &&
+        (product.category === "Kitchen" || product.category === "Bathroom")
+      )
+        match = true;
+
+      if (match) {
+        addProduct({
+          id: product.id,
+          name: product.name,
+          quantity: qty,
+          price: 5.99, // Base mock price
+        });
+      }
+    });
+
+    // 3. Skip selection and go straight to subscription sliders
+    router.push("/subscription");
   };
 
   const isFormComplete =
