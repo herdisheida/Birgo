@@ -74,6 +74,6 @@ export const subscriptionPacks = [
     id: "custom",
     name: "Custom pack",
     products: [], // Empty for custom
-    displayItems: ["Choose your own products"],
+    displayItems: ["Veldu vörurnar sjálf(ur)!"],
   },
 ];
