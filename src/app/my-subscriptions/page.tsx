@@ -242,7 +242,7 @@ export default function Subscriptions() {
                   onClick={() => setShowDeleteConfirm(true)}
                   className="w-full py-3 rounded-full transition-all hover:bg-red-50 text-red-500 font-medium"
                 >
-                  Delete my subscription
+                  Unsubscribe
                 </button>
               ) : (
                 <div className="flex gap-3 animate-in fade-in zoom-in duration-200">
