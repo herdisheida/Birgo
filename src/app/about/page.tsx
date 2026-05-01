@@ -1,7 +1,7 @@
 import { Heart, Clock, Sparkles, Users, Home } from "lucide-react";
 import Link from "next/link";
 
-export function About() {
+export default function About() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       {/* Hero */}
@@ -201,7 +201,7 @@ export function About() {
           Join thousands who never worry about running out of essentials
         </p>
         <Link
-          to="/get-started"
+          href="/get-started"
           className="inline-block px-8 py-3 rounded-full transition-transform hover:scale-105"
           style={{
             backgroundColor: "white",
