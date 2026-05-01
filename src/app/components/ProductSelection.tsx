@@ -1,5 +1,6 @@
 import { Package, Minus, Plus, X, ShoppingBag, Sparkles, Wind, Droplets, Trash2, Zap, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+import { useSubscriptionStore } from '../store/subscriptionStore';
 
 interface Product {
   id: string;
@@ -25,37 +26,29 @@ interface ProductSelectionProps {
 }
 
 export function ProductSelection({ onBack, onContinue }: ProductSelectionProps) {
-  const [selectedItems, setSelectedItems] = useState<Record<string, number>>({});
+  const { selectedProducts, addProduct, updateProductQuantity, removeProduct } = useSubscriptionStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const addItem = (productId: string) => {
-    setSelectedItems(prev => ({
-      ...prev,
-      [productId]: 1
-    }));
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      addProduct({
+        id: product.id,
+        name: product.name,
+        quantity: 1,
+        price: Math.random() * 10 + 5, // Mock price for now
+      });
+    }
   };
 
   const updateQuantity = (productId: string, delta: number) => {
-    setSelectedItems(prev => {
-      const current = prev[productId] || 0;
-      const newQuantity = current + delta;
-      if (newQuantity <= 0) {
-        const { [productId]: _, ...rest } = prev;
-        return rest;
-      }
-      return { ...prev, [productId]: newQuantity };
-    });
+    const current = selectedProducts[productId]?.quantity || 0;
+    const newQuantity = current + delta;
+    updateProductQuantity(productId, newQuantity);
   };
 
-  const removeItem = (productId: string) => {
-    setSelectedItems(prev => {
-      const { [productId]: _, ...rest } = prev;
-      return rest;
-    });
-  };
-
-  const selectedCount = Object.keys(selectedItems).length;
-  const totalItems = Object.values(selectedItems).reduce((sum, qty) => sum + qty, 0);
+  const selectedCount = Object.keys(selectedProducts).length;
+  const totalItems = Object.values(selectedProducts).reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#E8EBEF' }}>
@@ -107,7 +100,7 @@ export function ProductSelection({ onBack, onContinue }: ProductSelectionProps) 
           {/* Product Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {products.map((product) => {
-              const quantity = selectedItems[product.id] || 0;
+              const quantity = selectedProducts[product.id]?.quantity || 0;
               const isAdded = quantity > 0;
 
               return (
@@ -173,7 +166,7 @@ export function ProductSelection({ onBack, onContinue }: ProductSelectionProps) 
             ) : (
               <>
                 <div className="space-y-3 mb-6 max-h-96 overflow-y-auto">
-                  {Object.entries(selectedItems).map(([productId, quantity]) => {
+                  {Object.entries(selectedProducts).map(([productId, item]) => {
                     const product = products.find(p => p.id === productId);
                     if (!product) return null;
 
@@ -192,12 +185,12 @@ export function ProductSelection({ onBack, onContinue }: ProductSelectionProps) 
                               {product.name}
                             </p>
                             <p className="text-xs" style={{ color: '#1D3C6E', opacity: '0.6' }}>
-                              Qty: {quantity}
+                              Qty: {item.quantity}
                             </p>
                           </div>
                         </div>
                         <button
-                          onClick={() => removeItem(productId)}
+                          onClick={() => removeProduct(productId)}
                           className="w-6 h-6 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
                           style={{ backgroundColor: '#1D3C6E' }}
                         >
@@ -259,7 +252,7 @@ export function ProductSelection({ onBack, onContinue }: ProductSelectionProps) 
             ) : (
               <>
                 <div className="space-y-3 mb-6">
-                  {Object.entries(selectedItems).map(([productId, quantity]) => {
+                  {Object.entries(selectedProducts).map(([productId, item]) => {
                     const product = products.find(p => p.id === productId);
                     if (!product) return null;
 
@@ -278,12 +271,12 @@ export function ProductSelection({ onBack, onContinue }: ProductSelectionProps) 
                               {product.name}
                             </p>
                             <p className="text-xs" style={{ color: '#1D3C6E', opacity: '0.6' }}>
-                              Qty: {quantity}
+                              Qty: {item.quantity}
                             </p>
                           </div>
                         </div>
                         <button
-                          onClick={() => removeItem(productId)}
+                          onClick={() => removeProduct(productId)}
                           className="w-6 h-6 rounded-full flex items-center justify-center"
                           style={{ backgroundColor: '#1D3C6E' }}
                         >

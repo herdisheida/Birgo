@@ -1,18 +1,6 @@
 import { Package, ArrowLeft, Calendar, TrendingUp, Edit2, Check } from 'lucide-react';
-import { useState } from 'react';
-
-interface Product {
-  id: string;
-  name: string;
-  usage: number;
-}
-
-const initialProducts: Product[] = [
-  { id: '1', name: 'Toilet paper', usage: 70 },
-  { id: '2', name: 'Hand soap', usage: 50 },
-  { id: '3', name: 'Paper towels', usage: 60 },
-  { id: '4', name: 'Laundry detergent', usage: 40 },
-];
+import { useState, useEffect } from 'react';
+import { useSubscriptionStore } from '../store/subscriptionStore';
 
 interface SubscriptionSettingsProps {
   onBack?: () => void;
@@ -20,22 +8,28 @@ interface SubscriptionSettingsProps {
 }
 
 export function SubscriptionSettings({ onBack, onSave }: SubscriptionSettingsProps) {
-  const [frequency, setFrequency] = useState<'weekly' | 'monthly' | 'custom'>('monthly');
-  const [customDays, setCustomDays] = useState(30);
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const {
+    selectedProducts,
+    subscriptionSettings,
+    setSubscriptionSettings,
+    updateProductUsage,
+    removeProduct,
+  } = useSubscriptionStore();
+
   const [isSaved, setIsSaved] = useState(false);
 
-  const updateUsage = (productId: string, newUsage: number) => {
-    setProducts(prev =>
-      prev.map(p => p.id === productId ? { ...p, usage: newUsage } : p)
-    );
-    setIsSaved(false);
-  };
+  // Initialize product usage from selected products if not already set
+  useEffect(() => {
+    const selectedProductIds = Object.keys(selectedProducts);
+    const existingUsageIds = subscriptionSettings.productUsage.map(p => p.id);
 
-  const removeProduct = (productId: string) => {
-    setProducts(prev => prev.filter(p => p.id !== productId));
-    setIsSaved(false);
-  };
+    selectedProductIds.forEach(id => {
+      if (!existingUsageIds.includes(id)) {
+        const product = selectedProducts[id];
+        updateProductUsage(id, 50); // Default to 50% usage
+      }
+    });
+  }, [selectedProducts]);
 
   const handleSave = () => {
     setIsSaved(true);
@@ -46,7 +40,9 @@ export function SubscriptionSettings({ onBack, onSave }: SubscriptionSettingsPro
   };
 
   const getNextDeliveryDate = () => {
-    const days = frequency === 'weekly' ? 7 : frequency === 'monthly' ? 30 : customDays;
+    const days = subscriptionSettings.frequency === 'weekly' ? 7 :
+                 subscriptionSettings.frequency === 'monthly' ? 30 :
+                 subscriptionSettings.customDays || 30;
     const date = new Date();
     date.setDate(date.getDate() + days);
     return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -57,6 +53,8 @@ export function SubscriptionSettings({ onBack, onSave }: SubscriptionSettingsPro
     if (usage < 70) return 'Medium';
     return 'High';
   };
+
+  const products = subscriptionSettings.productUsage;
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#E8EBEF' }}>
@@ -122,12 +120,12 @@ export function SubscriptionSettings({ onBack, onSave }: SubscriptionSettingsPro
               {(['weekly', 'monthly', 'custom'] as const).map((freq) => (
                 <button
                   key={freq}
-                  onClick={() => setFrequency(freq)}
+                  onClick={() => setSubscriptionSettings({ frequency: freq })}
                   className="py-3 px-4 rounded-2xl transition-all hover:scale-105"
                   style={{
-                    backgroundColor: frequency === freq ? '#6FAEF2' : '#E8EBEF',
-                    color: frequency === freq ? 'white' : '#1D3C6E',
-                    fontWeight: frequency === freq ? '600' : '500'
+                    backgroundColor: subscriptionSettings.frequency === freq ? '#6FAEF2' : '#E8EBEF',
+                    color: subscriptionSettings.frequency === freq ? 'white' : '#1D3C6E',
+                    fontWeight: subscriptionSettings.frequency === freq ? '600' : '500'
                   }}
                 >
                   {freq.charAt(0).toUpperCase() + freq.slice(1)}
@@ -135,23 +133,22 @@ export function SubscriptionSettings({ onBack, onSave }: SubscriptionSettingsPro
               ))}
             </div>
 
-            {frequency === 'custom' && (
+            {subscriptionSettings.frequency === 'custom' && (
               <div className="mt-4">
                 <label className="block mb-2 text-sm" style={{ color: '#1D3C6E', opacity: '0.7' }}>
-                  Every {customDays} days
+                  Every {subscriptionSettings.customDays || 30} days
                 </label>
                 <input
                   type="range"
                   min="7"
                   max="90"
-                  value={customDays}
+                  value={subscriptionSettings.customDays || 30}
                   onChange={(e) => {
-                    setCustomDays(Number(e.target.value));
-                    setIsSaved(false);
+                    setSubscriptionSettings({ customDays: Number(e.target.value) });
                   }}
                   className="w-full h-2 rounded-full appearance-none cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, #6FAEF2 0%, #6FAEF2 ${((customDays - 7) / 83) * 100}%, #E8EBEF ${((customDays - 7) / 83) * 100}%, #E8EBEF 100%)`
+                    background: `linear-gradient(to right, #6FAEF2 0%, #6FAEF2 ${(((subscriptionSettings.customDays || 30) - 7) / 83) * 100}%, #E8EBEF ${(((subscriptionSettings.customDays || 30) - 7) / 83) * 100}%, #E8EBEF 100%)`
                   }}
                 />
                 <div className="flex justify-between text-xs mt-1" style={{ color: '#1D3C6E', opacity: '0.5' }}>

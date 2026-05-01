@@ -1,15 +1,10 @@
 import { Package, ArrowLeft, Users, Home, TrendingUp, Sparkles, ArrowRight } from 'lucide-react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useSubscriptionStore } from '../store/subscriptionStore';
 
 export function CustomerInput() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    householdSize: '',
-    householdType: '',
-    productPreferences: [] as string[],
-    usageFrequency: '',
-  });
+  const { customerInput, setCustomerInput } = useSubscriptionStore();
 
   const householdSizes = ['1 person', '2 people', '3-4 people', '5+ people'];
   const householdTypes = ['Living alone', 'Couple', 'Family with kids', 'Shared apartment'];
@@ -17,20 +12,19 @@ export function CustomerInput() {
   const usageFrequencies = ['Light use', 'Moderate use', 'Heavy use'];
 
   const toggleProductPreference = (category: string) => {
-    setFormData(prev => ({
-      ...prev,
-      productPreferences: prev.productPreferences.includes(category)
-        ? prev.productPreferences.filter(c => c !== category)
-        : [...prev.productPreferences, category]
-    }));
+    const newPreferences = customerInput.productPreferences.includes(category)
+      ? customerInput.productPreferences.filter(c => c !== category)
+      : [...customerInput.productPreferences, category];
+
+    setCustomerInput({ productPreferences: newPreferences });
   };
 
   const handleCreatePlan = () => {
     navigate('/selection');
   };
 
-  const isFormComplete = formData.householdSize && formData.householdType &&
-                         formData.productPreferences.length > 0 && formData.usageFrequency;
+  const isFormComplete = customerInput.householdSize && customerInput.householdType &&
+                         customerInput.productPreferences.length > 0 && customerInput.usageFrequency;
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#E8EBEF' }}>
@@ -84,12 +78,12 @@ export function CustomerInput() {
               {householdSizes.map((size) => (
                 <button
                   key={size}
-                  onClick={() => setFormData(prev => ({ ...prev, householdSize: size }))}
+                  onClick={() => setCustomerInput({ householdSize: size })}
                   className="py-3 px-4 rounded-2xl transition-all hover:scale-105"
                   style={{
-                    backgroundColor: formData.householdSize === size ? '#6FAEF2' : '#E8EBEF',
-                    color: formData.householdSize === size ? 'white' : '#1D3C6E',
-                    fontWeight: formData.householdSize === size ? '600' : '500'
+                    backgroundColor: customerInput.householdSize === size ? '#6FAEF2' : '#E8EBEF',
+                    color: customerInput.householdSize === size ? 'white' : '#1D3C6E',
+                    fontWeight: customerInput.householdSize === size ? '600' : '500'
                   }}
                 >
                   {size}
@@ -113,12 +107,12 @@ export function CustomerInput() {
               {householdTypes.map((type) => (
                 <button
                   key={type}
-                  onClick={() => setFormData(prev => ({ ...prev, householdType: type }))}
+                  onClick={() => setCustomerInput({ householdType: type })}
                   className="py-3 px-4 rounded-2xl transition-all hover:scale-105"
                   style={{
-                    backgroundColor: formData.householdType === type ? '#6FAEF2' : '#E8EBEF',
-                    color: formData.householdType === type ? 'white' : '#1D3C6E',
-                    fontWeight: formData.householdType === type ? '600' : '500'
+                    backgroundColor: customerInput.householdType === type ? '#6FAEF2' : '#E8EBEF',
+                    color: customerInput.householdType === type ? 'white' : '#1D3C6E',
+                    fontWeight: customerInput.householdType === type ? '600' : '500'
                   }}
                 >
                   {type}
@@ -149,9 +143,9 @@ export function CustomerInput() {
                   onClick={() => toggleProductPreference(category)}
                   className="py-3 px-4 rounded-2xl transition-all hover:scale-105"
                   style={{
-                    backgroundColor: formData.productPreferences.includes(category) ? '#6FAEF2' : '#E8EBEF',
-                    color: formData.productPreferences.includes(category) ? 'white' : '#1D3C6E',
-                    fontWeight: formData.productPreferences.includes(category) ? '600' : '500'
+                    backgroundColor: customerInput.productPreferences.includes(category) ? '#6FAEF2' : '#E8EBEF',
+                    color: customerInput.productPreferences.includes(category) ? 'white' : '#1D3C6E',
+                    fontWeight: customerInput.productPreferences.includes(category) ? '600' : '500'
                   }}
                 >
                   {category}
@@ -179,12 +173,12 @@ export function CustomerInput() {
               {usageFrequencies.map((frequency) => (
                 <button
                   key={frequency}
-                  onClick={() => setFormData(prev => ({ ...prev, usageFrequency: frequency }))}
+                  onClick={() => setCustomerInput({ usageFrequency: frequency })}
                   className="py-3 px-4 rounded-2xl transition-all hover:scale-105"
                   style={{
-                    backgroundColor: formData.usageFrequency === frequency ? '#6FAEF2' : '#E8EBEF',
-                    color: formData.usageFrequency === frequency ? 'white' : '#1D3C6E',
-                    fontWeight: formData.usageFrequency === frequency ? '600' : '500'
+                    backgroundColor: customerInput.usageFrequency === frequency ? '#6FAEF2' : '#E8EBEF',
+                    color: customerInput.usageFrequency === frequency ? 'white' : '#1D3C6E',
+                    fontWeight: customerInput.usageFrequency === frequency ? '600' : '500'
                   }}
                 >
                   {frequency}

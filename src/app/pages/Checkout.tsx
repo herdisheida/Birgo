@@ -8,25 +8,33 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useSubscriptionStore } from "../store/subscriptionStore";
 
 export function Checkout() {
   const navigate = useNavigate();
-  const [deliveryFrequency] = useState("Monthly");
+  const {
+    selectedProducts,
+    subscriptionSettings,
+    deliveryAddress,
+    setDeliveryAddress,
+    paymentMethod,
+    setPaymentMethod,
+  } = useSubscriptionStore();
+
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const orderItems = [
-    { name: "Toilet paper", quantity: 2, price: 12.99 },
-    { name: "Hand soap", quantity: 3, price: 8.99 },
-    { name: "Paper towels", quantity: 2, price: 9.99 },
-    { name: "Laundry detergent", quantity: 1, price: 15.99 },
-  ];
+  const orderItems = Object.values(selectedProducts);
 
   const subtotal = orderItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + (item.price || 0) * item.quantity,
     0,
   );
   const delivery = 4.99;
   const total = subtotal + delivery;
+
+  const deliveryFrequency = subscriptionSettings.frequency === 'weekly' ? 'Weekly' :
+                            subscriptionSettings.frequency === 'monthly' ? 'Monthly' :
+                            `Every ${subscriptionSettings.customDays || 30} days`;
 
   const handleStartSubscription = () => {
     setIsProcessing(true);
@@ -138,6 +146,8 @@ export function Checkout() {
                   <input
                     type="text"
                     placeholder="Jón Jónsson"
+                    value={deliveryAddress.fullName || ''}
+                    onChange={(e) => setDeliveryAddress({ fullName: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                     style={{
                       backgroundColor: "#E8EBEF",
@@ -157,6 +167,8 @@ export function Checkout() {
                   <input
                     type="text"
                     placeholder="Laugavegur 123"
+                    value={deliveryAddress.street || ''}
+                    onChange={(e) => setDeliveryAddress({ street: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                     style={{
                       backgroundColor: "#E8EBEF",
@@ -180,6 +192,8 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="101"
+                      value={deliveryAddress.postalCode || ''}
+                      onChange={(e) => setDeliveryAddress({ postalCode: e.target.value })}
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
@@ -201,6 +215,8 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="Reykjavík"
+                      value={deliveryAddress.city || ''}
+                      onChange={(e) => setDeliveryAddress({ city: e.target.value })}
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
@@ -247,6 +263,8 @@ export function Checkout() {
                   <input
                     type="text"
                     placeholder="1234 5678 9012 3456"
+                    value={paymentMethod.cardNumber || ''}
+                    onChange={(e) => setPaymentMethod({ cardNumber: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                     style={{
                       backgroundColor: "#E8EBEF",
@@ -270,6 +288,8 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="MM/YY"
+                      value={paymentMethod.expiryDate || ''}
+                      onChange={(e) => setPaymentMethod({ expiryDate: e.target.value })}
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
@@ -291,6 +311,8 @@ export function Checkout() {
                     <input
                       type="text"
                       placeholder="123"
+                      value={paymentMethod.cvc || ''}
+                      onChange={(e) => setPaymentMethod({ cvc: e.target.value })}
                       className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
                       style={{
                         backgroundColor: "#E8EBEF",
