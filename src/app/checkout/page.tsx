@@ -38,7 +38,7 @@ export default function Checkout() {
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
-      router.push("/subscriptions");
+      router.push("/my-subscription");
     }, 2000);
   };
 

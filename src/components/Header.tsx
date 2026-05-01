@@ -40,7 +40,7 @@ export function Header() {
 
         <nav className="flex items-center gap-6">
           <Link
-            href="/subscriptions"
+            href="/my-subscriptions"
             className="flex items-center gap-2 hover:opacity-70 transition-opacity"
             style={{ color: "#1D3C6E" }}
           >
