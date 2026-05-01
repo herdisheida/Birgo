@@ -1,5 +1,5 @@
 import { Wind, Sparkles, Droplets, Heart, Trash2, Zap } from "lucide-react";
-import { Product } from "../types";
+import { Product } from "@birgo/types";
 
 export const products: Product[] = [
   { id: "1", name: "Klósettpappír", icon: Wind, category: "Bathroom" },

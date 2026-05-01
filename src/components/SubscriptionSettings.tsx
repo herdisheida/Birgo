@@ -2,8 +2,8 @@
 
 import { Calendar, TrendingUp, Edit2, Check } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useSubscriptionStore } from "../store/subscriptionStore";
-import { SubscriptionSettingsProps } from "../../types";
+import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
+import { SubscriptionSettingsProps } from "@birgo/types";
 
 export function SubscriptionSettings({ onSave }: SubscriptionSettingsProps) {
   const {

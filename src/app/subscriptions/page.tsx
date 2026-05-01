@@ -2,7 +2,7 @@
 
 import { Calendar, Package, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSubscriptionStore } from "../store/subscriptionStore";
+import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 
 export default function Subscriptions() {
   const router = useRouter();

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useSubscriptionStore } from "../store/subscriptionStore";
+import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 import {
   householdSizes,
   householdTypes,

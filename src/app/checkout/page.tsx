@@ -3,7 +3,7 @@
 import { MapPin, CreditCard, Calendar, Check } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSubscriptionStore } from "../store/subscriptionStore";
+import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 
 export default function Checkout() {
   const router = useRouter();

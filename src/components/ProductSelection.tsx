@@ -2,9 +2,9 @@
 
 import { Minus, Plus, X, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useSubscriptionStore } from "../store/subscriptionStore";
-import { products } from "../constants/index";
-import { ProductSelectionProps } from "../../types";
+import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
+import { products } from "@birgo/constants";
+import { ProductSelectionProps } from "@birgo/types";
 
 export function ProductSelection({ onContinue }: ProductSelectionProps) {
   const {

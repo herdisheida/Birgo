@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ProductSelection } from "../components/ProductSelection";
+import { ProductSelectionProps } from "@birgo/types";
+import { ProductSelection } from "@birgo/components/ProductSelection";
 
 export default function SelectionPage() {
   const router = useRouter();

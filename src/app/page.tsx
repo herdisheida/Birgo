@@ -11,7 +11,7 @@ import {
   Package,
 } from "lucide-react";
 import Link from "next/link";
-import { useSubscriptionStore } from "./store/subscriptionStore";
+import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
 
 export default function Home() {
   const { reset } = useSubscriptionStore();

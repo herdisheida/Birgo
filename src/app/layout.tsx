@@ -1,7 +1,7 @@
 import "../styles/index.css"; // Make sure your global styles are imported here
 import { Package } from "lucide-react";
 import Link from "next/link";
-import { Header } from "./components/Header";
+import { Header } from "@birgo/components/Header";
 
 export const metadata = {
   title: "Birgó - Smart Household Delivery",
