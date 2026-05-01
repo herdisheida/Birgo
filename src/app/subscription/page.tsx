@@ -1,13 +1,15 @@
-import { useNavigate } from "react-router";
-import { SubscriptionSettings } from "../components/SubscriptionSettings";
+"use client";
 
-export function Subscription() {
-  const navigate = useNavigate();
+import { useRouter } from "next/navigation";
+import { SubscriptionSettings } from "@birgo/components/SubscriptionSettings";
+
+export default function Subscription() {
+  const router = useRouter();
 
   return (
     <SubscriptionSettings
-      onBack={() => navigate("/selection")}
-      onSave={() => navigate("/checkout")}
+      onBack={() => router.push("/selection")}
+      onSave={() => router.push("/checkout")}
     />
   );
 }
