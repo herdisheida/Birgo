@@ -7,6 +7,7 @@ export function Subscription() {
   return (
     <SubscriptionSettings
       onBack={() => navigate('/selection')}
+      onSave={() => navigate('/checkout')}
     />
   );
 }

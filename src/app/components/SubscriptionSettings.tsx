@@ -16,9 +16,10 @@ const initialProducts: Product[] = [
 
 interface SubscriptionSettingsProps {
   onBack?: () => void;
+  onSave?: () => void;
 }
 
-export function SubscriptionSettings({ onBack }: SubscriptionSettingsProps) {
+export function SubscriptionSettings({ onBack, onSave }: SubscriptionSettingsProps) {
   const [frequency, setFrequency] = useState<'weekly' | 'monthly' | 'custom'>('monthly');
   const [customDays, setCustomDays] = useState(30);
   const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -38,7 +39,10 @@ export function SubscriptionSettings({ onBack }: SubscriptionSettingsProps) {
 
   const handleSave = () => {
     setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 2000);
+    setTimeout(() => {
+      setIsSaved(false);
+      onSave?.();
+    }, 1000);
   };
 
   const getNextDeliveryDate = () => {
