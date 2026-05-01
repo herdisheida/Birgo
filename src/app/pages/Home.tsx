@@ -196,7 +196,7 @@ export function Home() {
               </span>
             </div>
             <nav className="flex gap-6 text-white text-sm">
-              <a href="#" className="hover:opacity-70 transition-opacity">About</a>
+              <Link to="/about" className="hover:opacity-70 transition-opacity">About</Link>
               <a href="#" className="hover:opacity-70 transition-opacity">Contact</a>
               <a href="#" className="hover:opacity-70 transition-opacity">Privacy</a>
               <a href="#" className="hover:opacity-70 transition-opacity">Terms</a>

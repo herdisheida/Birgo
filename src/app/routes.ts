@@ -3,6 +3,7 @@ import { Home } from './pages/Home';
 import { Selection } from './pages/Selection';
 import { Subscription } from './pages/Subscription';
 import { Checkout } from './pages/Checkout';
+import { About } from './pages/About';
 
 export const router = createBrowserRouter([
   {
@@ -20,5 +21,9 @@ export const router = createBrowserRouter([
   {
     path: '/checkout',
     Component: Checkout,
+  },
+  {
+    path: '/about',
+    Component: About,
   },
 ]);
