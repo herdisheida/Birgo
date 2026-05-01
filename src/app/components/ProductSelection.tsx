@@ -1,54 +1,11 @@
-import {
-  Package,
-  Minus,
-  Plus,
-  X,
-  ShoppingBag,
-  Sparkles,
-  Wind,
-  Droplets,
-  Trash2,
-  Zap,
-  ArrowLeft,
-  Heart,
-} from "lucide-react";
+"use client";
+
+import { Package, Minus, Plus, X, ShoppingBag, ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import Link from "next/link";
 import { useSubscriptionStore } from "../store/subscriptionStore";
-
-interface Product {
-  id: string;
-  name: string;
-  icon: any;
-  category: string;
-}
-
-const products: Product[] = [
-  { id: "1", name: "Klósettpappír", icon: Wind, category: "Bathroom" },
-  { id: "2", name: "Eldhúsrúllur", icon: Wind, category: "Kitchen" },
-  { id: "3", name: "Tannbursti", icon: Sparkles, category: "Bathroom" },
-  { id: "4", name: "Tannkrem", icon: Sparkles, category: "Bathroom" },
-  { id: "5", name: "Þvottarefni", icon: Droplets, category: "Laundry" },
-  { id: "6", name: "Handsápa", icon: Droplets, category: "Bathroom" },
-  {
-    id: "7",
-    name: "Bómull og eyrnapinnar",
-    icon: Sparkles,
-    category: "Bathroom",
-  },
-  { id: "8", name: "Túrvörur", icon: Heart, category: "Bathroom" },
-  { id: "9", name: "Uppþvottatöflur", icon: Sparkles, category: "Kitchen" },
-  { id: "10", name: "Uppþvottalögur", icon: Droplets, category: "Kitchen" },
-  { id: "11", name: "Þvottabursti", icon: Trash2, category: "Kitchen" },
-  { id: "12", name: "Svampar", icon: Zap, category: "Kitchen" },
-  { id: "13", name: "Klósettbursti", icon: Trash2, category: "Bathroom" },
-  { id: "14", name: "Salernishreinsir", icon: Zap, category: "Bathroom" },
-];
-
-interface ProductSelectionProps {
-  onBack?: () => void;
-  onContinue?: () => void;
-}
+import { products } from "../../constants";
+import { ProductSelectionProps } from "../../types";
 
 export function ProductSelection({
   onBack,
