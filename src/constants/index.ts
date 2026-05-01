@@ -21,10 +21,11 @@ export const products: Product[] = [
   { id: "12", name: "Svampar", icon: Zap, category: "Kitchen" },
   {
     id: "13",
-    name: "Klósettbursti og salernishreinsir",
+    name: "Klósettbursti",
     icon: Trash2,
     category: "Bathroom",
   },
+  { id: "14", name: "Salernishreinsir", icon: Droplets, category: "Bathroom" },
 ];
 
 export const householdSizes = [
