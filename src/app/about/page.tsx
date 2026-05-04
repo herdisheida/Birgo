@@ -201,7 +201,7 @@ export default function About() {
           Join thousands who never worry about running out of essentials
         </p>
         <Link
-          href="/get-started"
+          href="/auth"
           className="inline-block px-8 py-3 rounded-full transition-transform hover:scale-105"
           style={{
             backgroundColor: "white",

@@ -66,7 +66,7 @@ export default function Home() {
             We deliver household products automatically
           </p>
           <Link
-            href="/get-started"
+            href="/auth"
             onClick={() => reset()}
             className="inline-block px-8 py-3 rounded-full text-white transition-transform hover:scale-105"
             style={{ backgroundColor: "#6FAEF2" }}
