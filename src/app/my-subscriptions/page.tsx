@@ -7,6 +7,8 @@ import {
   Trash2,
   Clock,
   CheckCircle2,
+  AlertCircle,
+  Zap,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,6 +19,11 @@ export default function Subscriptions() {
   const { selectedProducts, subscriptionSettings, reset } =
     useSubscriptionStore();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Nýtt State til að halda utan um vörur sem eru að klárast
+  const [runningOutItems, setRunningOutItems] = useState<Set<string>>(
+    new Set(),
+  );
 
   const orderItems = Object.values(selectedProducts);
   const hasActiveSubscription = orderItems.length > 0;
@@ -53,6 +60,13 @@ export default function Subscriptions() {
   const handleDeleteConfirm = () => {
     reset();
     setShowDeleteConfirm(false);
+    setRunningOutItems(new Set());
+  };
+
+  const markAsRunningOut = (productId: string) => {
+    const newSet = new Set(runningOutItems);
+    newSet.add(productId);
+    setRunningOutItems(newSet);
   };
 
   return (
@@ -161,31 +175,63 @@ export default function Subscriptions() {
               </div>
 
               <div className="space-y-4">
-                {orderItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm">
-                        <Package className="w-6 h-6 text-slate-400" />
+                {orderItems.map((item) => {
+                  const isRunningOut = runningOutItems.has(item.id);
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-2xl border transition-colors ${
+                        isRunningOut
+                          ? "bg-orange-50/50 border-orange-200"
+                          : "bg-slate-50 border-slate-100 hover:border-slate-200"
+                      }`}
+                    >
+                      <div className="flex items-center gap-4 mb-3 sm:mb-0">
+                        <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm shrink-0">
+                          <Package
+                            className={`w-6 h-6 ${isRunningOut ? "text-orange-400" : "text-slate-400"}`}
+                          />
+                        </div>
+                        <div>
+                          <p className="font-bold text-slate-900">
+                            {item.name}
+                          </p>
+                          <p className="text-sm text-slate-500">
+                            Magn:{" "}
+                            <span className="font-semibold text-slate-700">
+                              {item.quantity}
+                            </span>{" "}
+                            stk
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-bold text-slate-900">{item.name}</p>
-                        <p className="text-sm text-slate-500">
-                          Magn:{" "}
-                          <span className="font-semibold text-slate-700">
-                            {item.quantity}
-                          </span>{" "}
-                          stk
+
+                      <div className="flex items-center justify-between sm:justify-end gap-6 sm:w-auto w-full">
+                        <p className="font-bold text-slate-900">
+                          ${((item.price || 0) * item.quantity).toFixed(2)}
                         </p>
+
+                        {/* NÝTT: "Að klárast" takkinn */}
+                        {!isRunningOut ? (
+                          <button
+                            onClick={() => markAsRunningOut(item.id)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-sm font-semibold text-slate-600 hover:text-orange-600 hover:border-orange-300 hover:bg-orange-50 transition-all shadow-sm"
+                            title="Láttu okkur vita ef þetta er að klárast"
+                          >
+                            <AlertCircle className="w-4 h-4" />
+                            <span>Að klárast?</span>
+                          </button>
+                        ) : (
+                          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-100 text-sm font-bold text-orange-700">
+                            <Zap className="w-4 h-4" />
+                            <span>Flýtisending skráð</span>
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <p className="font-bold text-slate-900">
-                      ${((item.price || 0) * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
