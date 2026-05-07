@@ -1,217 +1,140 @@
-import { Heart, Clock, Sparkles, Users, Home } from "lucide-react";
+import { Heart, Clock, Sparkles, Users, Home, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function About() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
+    <div className="w-full">
       {/* Hero */}
-      <div className="text-center mb-16">
-        <div
-          className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center"
-          style={{ backgroundColor: "#90C4F4" }}
-        >
-          <Heart className="w-10 h-10" style={{ color: "#1D3C6E" }} />
-        </div>
-        <h1
-          className="mb-4"
-          style={{
-            fontSize: "2.5rem",
-            color: "#1D3C6E",
-            fontWeight: "600",
-            lineHeight: "1.2",
-          }}
-        >
-          Making everyday life easier
-        </h1>
-        <p className="text-lg" style={{ color: "#1D3C6E", opacity: "0.7" }}>
-          We believe running out of essentials should be a thing of the past
-        </p>
-      </div>
-
-      {/* Problem & Solution */}
-      <div className="grid md:grid-cols-2 gap-6 mb-16">
-        <div className="p-8 rounded-3xl bg-white">
-          <div
-            className="w-14 h-14 rounded-full mb-4 flex items-center justify-center"
-            style={{ backgroundColor: "#E8EBEF" }}
-          >
-            <Clock className="w-7 h-7" style={{ color: "#1D3C6E" }} />
+      <section className="py-20 px-6 text-center">
+        <div className="max-w-3xl mx-auto">
+          <div className="w-20 h-20 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto mb-8 shadow-sm border border-blue-200">
+            <Heart className="w-10 h-10 text-blue-600" />
           </div>
-          <h2
-            className="mb-3"
-            style={{
-              fontSize: "1.5rem",
-              color: "#1D3C6E",
-              fontWeight: "600",
-            }}
-          >
-            The problem
-          </h2>
-          <p style={{ color: "#1D3C6E", opacity: "0.7", lineHeight: "1.6" }}>
-            Life gets busy. We forget to buy toilet paper, run out of soap at
-            the worst time, or realize we're out of detergent when the laundry
-            piles up. It's frustrating and wastes precious time.
+          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
+            Við gerum hversdaginn einfaldari
+          </h1>
+          <p className="text-xl text-slate-500">
+            Við trúum því að það að verða uppiskroppa með nauðsynjar ætti að
+            heyra sögunni til.
           </p>
         </div>
+      </section>
 
-        <div className="p-8 rounded-3xl bg-white">
-          <div
-            className="w-14 h-14 rounded-full mb-4 flex items-center justify-center"
-            style={{ backgroundColor: "#90C4F4" }}
-          >
-            <Sparkles className="w-7 h-7" style={{ color: "#1D3C6E" }} />
+      {/* Vandamál og Lausn */}
+      <section className="py-12 px-6">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+          <div className="p-10 rounded-[2rem] bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center mb-6">
+              <Clock className="w-7 h-7 text-slate-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
+              Vandamálið
+            </h2>
+            <p className="text-slate-600 leading-relaxed">
+              Lífið er annasamt. Við gleymum að kaupa klósettpappír,
+              uppþvottalögurinn klárast á versta tíma og hreinlætisvörurnar
+              gleymast í búðinni. Þetta er pirrandi og sóar dýrmætum tíma.
+            </p>
           </div>
-          <h2
-            className="mb-3"
-            style={{
-              fontSize: "1.5rem",
-              color: "#1D3C6E",
-              fontWeight: "600",
-            }}
-          >
-            Our solution
+
+          <div className="p-10 rounded-[2rem] bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+              <Sparkles className="w-7 h-7 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">
+              Okkar lausn
+            </h2>
+            <p className="text-slate-600 leading-relaxed">
+              Birgó lærir inn á þína notkun og sendir heimilisnauðsynjar
+              sjálfkrafa heim til þín, rétt áður en þær klárast. Engar
+              neyðarferðir út í búð, ekkert andlegt álag. Bara einum hlut færra
+              til að hafa áhyggjur af.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Markmið */}
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="p-12 md:p-16 rounded-[2.5rem] bg-gradient-to-br from-blue-600 to-indigo-700 text-center text-white shadow-xl relative overflow-hidden">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Okkar markmið
+            </h2>
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed font-medium">
+              Við erum hér til að gera hversdaginn einfaldari. Með því að sjá um
+              smávægilegu, endurteknu verkin sem draga úr orku þinni, gefum við
+              þér meiri tíma fyrir það sem raunverulega skiptir máli.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Hverjum hjálpum við */}
+      <section className="py-16 px-6 bg-slate-50">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-center text-3xl font-bold text-slate-900 mb-12">
+            Hverjum hjálpum við?
           </h2>
-          <p style={{ color: "#1D3C6E", opacity: "0.7", lineHeight: "1.6" }}>
-            Birgó learns your usage patterns and delivers household essentials
-            automatically, right before you run out. No more emergency store
-            runs. No more mental load. Just one less thing to worry about.
-          </p>
-        </div>
-      </div>
-
-      {/* Mission */}
-      <div className="p-10 rounded-3xl bg-white text-center mb-16">
-        <h2
-          className="mb-4"
-          style={{ fontSize: "2rem", color: "#1D3C6E", fontWeight: "600" }}
-        >
-          Our mission
-        </h2>
-        <p
-          className="text-lg max-w-2xl mx-auto"
-          style={{ color: "#1D3C6E", opacity: "0.7", lineHeight: "1.6" }}
-        >
-          We exist to make everyday life easier. By taking care of the small,
-          repetitive tasks that drain your energy, we give you more time for
-          what actually matters.
-        </p>
-      </div>
-
-      {/* Who it's for */}
-      <div className="mb-16">
-        <h2
-          className="text-center mb-10"
-          style={{ fontSize: "2rem", color: "#1D3C6E", fontWeight: "600" }}
-        >
-          Who we help
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-3xl bg-white text-center hover:shadow-lg transition-shadow">
-            <div
-              className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
-              style={{ backgroundColor: "#90C4F4" }}
-            >
-              <Clock className="w-8 h-8" style={{ color: "#1D3C6E" }} />
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-[2rem] bg-white border border-slate-100 text-center shadow-sm hover:-translate-y-1 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-teal-50 mx-auto mb-6 flex items-center justify-center">
+                <Clock className="w-8 h-8 text-teal-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                Önnuðu fólki
+              </h3>
+              <p className="text-slate-500 leading-relaxed">
+                Vinnurðu mikið? Við sjáum um grunnþarfirnar svo þú getir
+                einbeitt þér að þínum verkefnum og átt meiri frítíma.
+              </p>
             </div>
-            <h3
-              className="mb-3"
-              style={{
-                fontSize: "1.25rem",
-                color: "#1D3C6E",
-                fontWeight: "600",
-              }}
-            >
-              Busy professionals
-            </h3>
-            <p
-              className="text-sm"
-              style={{ color: "#1D3C6E", opacity: "0.7", lineHeight: "1.6" }}
-            >
-              Working long hours? We handle the basics so you can focus on your
-              career and still have time for yourself.
-            </p>
-          </div>
 
-          <div className="p-6 rounded-3xl bg-white text-center hover:shadow-lg transition-shadow">
-            <div
-              className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
-              style={{ backgroundColor: "#90C4F4" }}
-            >
-              <Users className="w-8 h-8" style={{ color: "#1D3C6E" }} />
+            <div className="p-8 rounded-[2rem] bg-white border border-slate-100 text-center shadow-sm hover:-translate-y-1 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-purple-50 mx-auto mb-6 flex items-center justify-center">
+                <Users className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                Fjölskyldum
+              </h3>
+              <p className="text-slate-500 leading-relaxed">
+                Að púsla saman börnum, vinnu og heimili? Við tryggjum að þið
+                verðið aldrei uppiskroppa þegar á þarf að halda.
+              </p>
             </div>
-            <h3
-              className="mb-3"
-              style={{
-                fontSize: "1.25rem",
-                color: "#1D3C6E",
-                fontWeight: "600",
-              }}
-            >
-              Families
-            </h3>
-            <p
-              className="text-sm"
-              style={{ color: "#1D3C6E", opacity: "0.7", lineHeight: "1.6" }}
-            >
-              Juggling kids, work, and home? We make sure you never run out of
-              essentials when you need them most.
-            </p>
-          </div>
 
-          <div className="p-6 rounded-3xl bg-white text-center hover:shadow-lg transition-shadow">
-            <div
-              className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
-              style={{ backgroundColor: "#90C4F4" }}
-            >
-              <Home className="w-8 h-8" style={{ color: "#1D3C6E" }} />
+            <div className="p-8 rounded-[2rem] bg-white border border-slate-100 text-center shadow-sm hover:-translate-y-1 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-orange-50 mx-auto mb-6 flex items-center justify-center">
+                <Home className="w-8 h-8 text-orange-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-4">
+                Ungu fólki
+              </h3>
+              <p className="text-slate-500 leading-relaxed">
+                Nýflutt/ur að heiman? Við hjálpum þér að byggja upp góðar venjur
+                og halda heimilinu birgðu af nauðsynjum.
+              </p>
             </div>
-            <h3
-              className="mb-3"
-              style={{
-                fontSize: "1.25rem",
-                color: "#1D3C6E",
-                fontWeight: "600",
-              }}
-            >
-              Young individuals
-            </h3>
-            <p
-              className="text-sm"
-              style={{ color: "#1D3C6E", opacity: "0.7", lineHeight: "1.6" }}
-            >
-              Just starting out on your own? We help you build good habits and
-              stay stocked without the stress.
-            </p>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* CTA */}
-      <div
-        className="p-10 rounded-3xl text-center"
-        style={{ backgroundColor: "#6FAEF2" }}
-      >
-        <h2
-          className="mb-4 text-white"
-          style={{ fontSize: "2rem", fontWeight: "600" }}
-        >
-          Ready to simplify your life?
+      <section className="py-24 px-6 text-center">
+        <h2 className="text-3xl font-extrabold text-slate-900 mb-4">
+          Tilbúin/n að einfalda lífið?
         </h2>
-        <p className="mb-6 text-white opacity-90">
-          Join thousands who never worry about running out of essentials
+        <p className="text-lg text-slate-500 mb-10 max-w-lg mx-auto">
+          Slástu í hóp þúsunda sem þurfa ekki lengur að hafa áhyggjur af því að
+          eiga til klósettpappír.
         </p>
         <Link
           href="/auth"
-          className="inline-block px-8 py-3 rounded-full transition-transform hover:scale-105"
-          style={{
-            backgroundColor: "white",
-            color: "#1D3C6E",
-            fontWeight: "600",
-          }}
+          className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-blue-600 text-white font-bold text-lg transition-all hover:bg-blue-700 hover:scale-105 shadow-lg"
         >
-          Get Started
+          Byrja núna <ArrowRight className="w-5 h-5" />
         </Link>
-      </div>
+      </section>
     </div>
   );
 }

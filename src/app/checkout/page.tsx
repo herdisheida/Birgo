@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, CreditCard, Calendar, Check } from "lucide-react";
+import { MapPin, CreditCard, Calendar, Check, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSubscriptionStore } from "@birgo/app/store/subscriptionStore";
@@ -29,67 +29,46 @@ export default function Checkout() {
 
   const deliveryFrequency =
     subscriptionSettings.frequency === "weekly"
-      ? "Weekly"
+      ? "Vikulega"
       : subscriptionSettings.frequency === "monthly"
-        ? "Monthly"
-        : `Every ${subscriptionSettings.customDays || 30} days`;
+        ? "Mánaðarlega"
+        : `Á ${subscriptionSettings.customDays || 30} daga fresti`;
 
   const handleStartSubscription = () => {
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
-      router.push("/my-subscriptions");
+      router.push("/subscriptions");
     }, 2000);
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8">
-      <div className="mb-6">
-        <h1
-          className="mb-2"
-          style={{
-            fontSize: "2rem",
-            color: "#1D3C6E",
-            fontWeight: "600",
-          }}
-        >
-          Complete your subscription
+    <div className="max-w-6xl mx-auto px-6 py-12 w-full">
+      <div className="mb-10">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+          Ganga frá áskrift
         </h1>
-        <p style={{ color: "#1D3C6E", opacity: "0.7" }}>
-          Review your order and start your automatic deliveries
+        <p className="text-lg text-slate-500">
+          Fylltu út upplýsingarnar til að hefja þína sjálfvirku heimsendingu
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Delivery Address */}
-          <div className="p-6 rounded-3xl bg-white">
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "#90C4F4" }}
-              >
-                <MapPin className="w-5 h-5" style={{ color: "#1D3C6E" }} />
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Vinstri dálkur (Form) */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Afhendingarheimilisfang */}
+          <div className="p-8 rounded-[2rem] bg-white border border-slate-100 shadow-sm">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
+                <MapPin className="w-6 h-6 text-blue-600" />
               </div>
-              <h2
-                style={{
-                  fontSize: "1.25rem",
-                  color: "#1D3C6E",
-                  fontWeight: "600",
-                }}
-              >
-                Delivery address
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900">Afhending</h2>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label
-                  className="block mb-2 text-sm"
-                  style={{ color: "#1D3C6E", opacity: "0.7" }}
-                >
-                  Full name
+                <label className="block mb-2 text-sm font-semibold text-slate-700">
+                  Fullt nafn
                 </label>
                 <input
                   type="text"
@@ -98,21 +77,13 @@ export default function Checkout() {
                   onChange={(e) =>
                     setDeliveryAddress({ fullName: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
-                  style={{
-                    backgroundColor: "#E8EBEF",
-                    border: "2px solid #E8EBEF",
-                    color: "#1D3C6E",
-                  }}
+                  className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700"
                 />
               </div>
 
               <div>
-                <label
-                  className="block mb-2 text-sm"
-                  style={{ color: "#1D3C6E", opacity: "0.7" }}
-                >
-                  Street address
+                <label className="block mb-2 text-sm font-semibold text-slate-700">
+                  Heimilisfang
                 </label>
                 <input
                   type="text"
@@ -121,25 +92,14 @@ export default function Checkout() {
                   onChange={(e) =>
                     setDeliveryAddress({ street: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
-                  style={{
-                    backgroundColor: "#E8EBEF",
-                    border: "2px solid #E8EBEF",
-                    color: "#1D3C6E",
-                  }}
+                  className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label
-                    className="block mb-2 text-sm"
-                    style={{
-                      color: "#1D3C6E",
-                      opacity: "0.7",
-                    }}
-                  >
-                    Postal code
+                  <label className="block mb-2 text-sm font-semibold text-slate-700">
+                    Póstnúmer
                   </label>
                   <input
                     type="text"
@@ -148,23 +108,12 @@ export default function Checkout() {
                     onChange={(e) =>
                       setDeliveryAddress({ postalCode: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
-                    style={{
-                      backgroundColor: "#E8EBEF",
-                      border: "2px solid #E8EBEF",
-                      color: "#1D3C6E",
-                    }}
+                    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700"
                   />
                 </div>
                 <div>
-                  <label
-                    className="block mb-2 text-sm"
-                    style={{
-                      color: "#1D3C6E",
-                      opacity: "0.7",
-                    }}
-                  >
-                    City
+                  <label className="block mb-2 text-sm font-semibold text-slate-700">
+                    Sveitarfélag
                   </label>
                   <input
                     type="text"
@@ -173,45 +122,26 @@ export default function Checkout() {
                     onChange={(e) =>
                       setDeliveryAddress({ city: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
-                    style={{
-                      backgroundColor: "#E8EBEF",
-                      border: "2px solid #E8EBEF",
-                      color: "#1D3C6E",
-                    }}
+                    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Payment Method */}
-          <div className="p-6 rounded-3xl bg-white">
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "#90C4F4" }}
-              >
-                <CreditCard className="w-5 h-5" style={{ color: "#1D3C6E" }} />
+          {/* Greiðslumáti */}
+          <div className="p-8 rounded-[2rem] bg-white border border-slate-100 shadow-sm">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
+                <CreditCard className="w-6 h-6 text-green-600" />
               </div>
-              <h2
-                style={{
-                  fontSize: "1.25rem",
-                  color: "#1D3C6E",
-                  fontWeight: "600",
-                }}
-              >
-                Payment method
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900">Greiðslumáti</h2>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label
-                  className="block mb-2 text-sm"
-                  style={{ color: "#1D3C6E", opacity: "0.7" }}
-                >
-                  Card number
+                <label className="block mb-2 text-sm font-semibold text-slate-700">
+                  Kortanúmer
                 </label>
                 <input
                   type="text"
@@ -220,49 +150,27 @@ export default function Checkout() {
                   onChange={(e) =>
                     setPaymentMethod({ cardNumber: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
-                  style={{
-                    backgroundColor: "#E8EBEF",
-                    border: "2px solid #E8EBEF",
-                    color: "#1D3C6E",
-                  }}
+                  className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700 tracking-widest"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label
-                    className="block mb-2 text-sm"
-                    style={{
-                      color: "#1D3C6E",
-                      opacity: "0.7",
-                    }}
-                  >
-                    Expiry date
+                  <label className="block mb-2 text-sm font-semibold text-slate-700">
+                    Gildistími
                   </label>
                   <input
                     type="text"
-                    placeholder="MM/YY"
+                    placeholder="MM/ÁÁ"
                     value={paymentMethod.expiryDate || ""}
                     onChange={(e) =>
                       setPaymentMethod({ expiryDate: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
-                    style={{
-                      backgroundColor: "#E8EBEF",
-                      border: "2px solid #E8EBEF",
-                      color: "#1D3C6E",
-                    }}
+                    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700"
                   />
                 </div>
                 <div>
-                  <label
-                    className="block mb-2 text-sm"
-                    style={{
-                      color: "#1D3C6E",
-                      opacity: "0.7",
-                    }}
-                  >
+                  <label className="block mb-2 text-sm font-semibold text-slate-700">
                     CVC
                   </label>
                   <input
@@ -270,147 +178,66 @@ export default function Checkout() {
                     placeholder="123"
                     value={paymentMethod.cvc || ""}
                     onChange={(e) => setPaymentMethod({ cvc: e.target.value })}
-                    className="w-full px-4 py-3 rounded-2xl border-2 outline-none focus:border-opacity-100 transition-colors"
-                    style={{
-                      backgroundColor: "#E8EBEF",
-                      border: "2px solid #E8EBEF",
-                      color: "#1D3C6E",
-                    }}
+                    className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-700"
                   />
                 </div>
               </div>
 
-              <div
-                className="mt-4 p-4 rounded-2xl"
-                style={{ backgroundColor: "#E8EBEF" }}
-              >
-                <p
-                  className="text-sm"
-                  style={{ color: "#1D3C6E", opacity: "0.7" }}
-                >
-                  🔒 Your payment information is encrypted and secure
+              <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
+                <ShieldCheck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                <p className="text-sm text-slate-500 leading-relaxed">
+                  Greiðsluupplýsingarnar þínar eru dulkóðaðar og sendar í gegnum
+                  örugga greiðslugátt. Birgó geymir aldrei kortanúmerið þitt.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Order Summary Sidebar */}
+        {/* Hægri dálkur (Samantekt) */}
         <div className="lg:col-span-1">
-          <div className="sticky top-8 space-y-4">
-            {/* Subscription Overview */}
-            <div className="p-6 rounded-3xl bg-white">
-              <h2
-                className="mb-4"
-                style={{
-                  fontSize: "1.25rem",
-                  color: "#1D3C6E",
-                  fontWeight: "600",
-                }}
-              >
-                Subscription overview
-              </h2>
+          <div className="sticky top-28 space-y-6">
+            <div className="p-8 rounded-[2rem] bg-slate-900 text-white shadow-xl">
+              <h2 className="text-xl font-bold mb-6">Samantekt pöntunar</h2>
 
-              <div
-                className="flex items-center gap-3 mb-4 p-4 rounded-2xl"
-                style={{ backgroundColor: "#90C4F4" }}
-              >
-                <Calendar className="w-5 h-5" style={{ color: "#1D3C6E" }} />
+              <div className="flex items-center gap-3 mb-6 p-4 rounded-xl bg-slate-800">
+                <Calendar className="w-5 h-5 text-blue-400" />
                 <div>
-                  <p
-                    className="text-sm"
-                    style={{
-                      color: "#1D3C6E",
-                      opacity: "0.7",
-                    }}
-                  >
-                    Delivery frequency
+                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">
+                    Tíðni afhendinga
                   </p>
-                  <p
-                    style={{
-                      color: "#1D3C6E",
-                      fontWeight: "600",
-                    }}
-                  >
-                    {deliveryFrequency}
-                  </p>
+                  <p className="font-bold text-white">{deliveryFrequency}</p>
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4 mb-6 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                 {orderItems.map((item, idx) => (
                   <div key={idx} className="flex justify-between text-sm">
-                    <span style={{ color: "#1D3C6E" }}>
-                      {item.name} × {item.quantity}
+                    <span className="text-slate-300">
+                      {item.name}{" "}
+                      <span className="text-slate-500">×{item.quantity}</span>
                     </span>
-                    <span
-                      style={{
-                        color: "#1D3C6E",
-                        fontWeight: "600",
-                      }}
-                    >
+                    <span className="font-bold text-white">
                       ${(item.price * item.quantity).toFixed(2)}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <div
-                className="my-4 border-t"
-                style={{ borderColor: "#E8EBEF" }}
-              />
-
-              <div className="space-y-2">
+              <div className="border-t border-slate-700/50 pt-4 space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
-                  <span
-                    style={{
-                      color: "#1D3C6E",
-                      opacity: "0.7",
-                    }}
-                  >
-                    Subtotal
-                  </span>
-                  <span style={{ color: "#1D3C6E" }}>
-                    ${subtotal.toFixed(2)}
-                  </span>
+                  <span className="text-slate-400">Vörur</span>
+                  <span className="text-white">${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span
-                    style={{
-                      color: "#1D3C6E",
-                      opacity: "0.7",
-                    }}
-                  >
-                    Delivery
-                  </span>
-                  <span style={{ color: "#1D3C6E" }}>
-                    ${delivery.toFixed(2)}
-                  </span>
+                  <span className="text-slate-400">Heimsending</span>
+                  <span className="text-white">${delivery.toFixed(2)}</span>
                 </div>
               </div>
 
-              <div
-                className="my-4 border-t"
-                style={{ borderColor: "#E8EBEF" }}
-              />
-
-              <div className="flex justify-between items-center">
-                <span
-                  style={{
-                    fontSize: "1.125rem",
-                    color: "#1D3C6E",
-                    fontWeight: "600",
-                  }}
-                >
-                  Total per delivery
-                </span>
-                <span
-                  style={{
-                    fontSize: "1.5rem",
-                    color: "#6FAEF2",
-                    fontWeight: "600",
-                  }}
-                >
+              <div className="border-t border-slate-700/50 pt-6 flex justify-between items-center mb-8">
+                <span className="font-bold text-white">Samtals</span>
+                <span className="text-3xl font-extrabold text-blue-400">
                   ${total.toFixed(2)}
                 </span>
               </div>
@@ -418,40 +245,22 @@ export default function Checkout() {
               <button
                 onClick={handleStartSubscription}
                 disabled={isProcessing}
-                className="w-full mt-6 py-4 rounded-full text-white transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                style={{ backgroundColor: "#6FAEF2" }}
+                className="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all hover:-translate-y-0.5 shadow-lg disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isProcessing ? (
-                  <>Processing...</>
+                  <span className="animate-pulse">Vinnur úr greiðslu...</span>
                 ) : (
                   <>
                     <Check className="w-5 h-5" />
-                    <span>Start Subscription</span>
+                    <span>Staðfesta áskrift</span>
                   </>
                 )}
               </button>
 
-              <p
-                className="mt-4 text-xs text-center"
-                style={{ color: "#1D3C6E", opacity: "0.6" }}
-              >
-                Cancel anytime, no questions asked
+              <p className="mt-6 text-xs text-center text-slate-500">
+                Þú getur breytt eða sagt upp áskrift hvenær sem er inni á Mínum
+                Síðum, engin binding.
               </p>
-            </div>
-
-            {/* Trust Indicators */}
-            <div
-              className="p-4 rounded-2xl text-center"
-              style={{ backgroundColor: "white" }}
-            >
-              <div
-                className="flex justify-center gap-6 text-xs"
-                style={{ color: "#1D3C6E", opacity: "0.6" }}
-              >
-                <span>✓ Free cancellation</span>
-                <span>✓ Pause anytime</span>
-                <span>✓ Change products</span>
-              </div>
             </div>
           </div>
         </div>
